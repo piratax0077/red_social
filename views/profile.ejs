@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/jquery"></script>
+    <link rel="stylesheet" href="/styles">
+    <script src="/js/main.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+        integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+        crossorigin="anonymous" />
+    <title>Perfil</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Perfil de <%=user.name %></h1>
+        <% for(var i = 0; i < posts.length; i++) { %>
+            <h3><%=posts[i].title %></h5>
+            <h5><%=posts[i].body %></h6>
+        <% } %>
+
+        <h1>Listado de amigos</h1>
+        <% for(var j = 0; j < friends.length; j++){ %>
+            <div class="card">
+                <div class="card-title">
+                    <p><a href="/api/users/<%=friends[j].user.id %>"><%=friends[j].user.name %></a></p>
+                </div>
+            </div>
+        <% } %>
+    </div>
+    
+
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

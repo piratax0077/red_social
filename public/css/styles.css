@@ -1,0 +1,65 @@
+@import url('/fas'); 
+
+body{
+    background-color: white;
+}
+
+.noticia{
+    display: block;
+    border: 1px solid red;
+    width: 700px;
+    min-height: auto;
+    width: 80%;
+    margin: 0px auto;
+    margin-bottom: 10px;
+}
+
+.contenido,
+#postear{
+    width: 80%;
+    margin: 0px auto;
+    border:1px solid red;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+#post{
+    width: 80%;
+    margin: 0px auto;
+}
+
+#login{
+    padding: 180px;
+    height: 500px;
+    width: 100%;
+    border:1px solid red;
+}
+
+#login input[type="email"],
+#login input[type="password"]{
+    margin-bottom: 20px;
+}
+
+.fa-heart{
+    cursor: pointer;
+}
+
+.red{
+    color: red;
+}
+
+.black{
+    color: black;
+}
+
+#logout{
+    float: right;
+    position: relative;
+}
+
+.avatar{
+    width: 100px;
+    height: 100px;
+    border-radius: 900px;
+    display: block;
+}
