@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,26 +13,43 @@
         crossorigin="anonymous" />
     <title>Perfil</title>
 </head>
+
 <body>
     <div class="container">
-        <h1>Perfil de <%=user.name %></h1>
-        <% for(var i = 0; i < posts.length; i++) { %>
-            <h3><%=posts[i].title %></h5>
-            <h5><%=posts[i].body %></h6>
-        <% } %>
+        <h1>Perfil de <%=user.name %>
+            <p><%=user.email %></p>
+            <p><%=user.city.name %></p>
+        </h1>
+
+        <div class="row">
+
+            <% for(var i=0; i < posts.length; i++) { %>
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="/images/<%=posts[i].autor.image %>" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%=posts[i].title %>
+                            </h5>
+                            <p class="card-text">
+                                <%=posts[i].body %>.
+                            </p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+
+        </div>
+
 
         <h1>Listado de amigos</h1>
-        <% for(var j = 0; j < friends.length; j++){ %>
-            <div class="card">
-                <div class="card-title">
-                    <p><a href="/api/users/<%=friends[j].user.id %>"><%=friends[j].user.name %></a></p>
-                </div>
-            </div>
-        <% } %>
+
     </div>
-    
+
 
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
 </body>
+
 </html>

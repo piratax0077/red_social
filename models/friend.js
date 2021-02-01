@@ -4,8 +4,8 @@ const sequelize = require('../database/db');
 class friend extends Model {}
 
 friend.init({
-    sender_id:DataTypes.INTEGER,
-    description: DataTypes.STRING
+    description: DataTypes.STRING,
+    isAccepted: DataTypes.BOOLEAN
 },{
     timestamps: false, sequelize,modelName:'friend'
 })

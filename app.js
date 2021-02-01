@@ -40,7 +40,7 @@ app.use('/api/users', require('./routes/user'));
 app.use('/api/posts', require('./routes/post'));
 app.use('/api/citys', require('./routes/city'));
 app.use('/api/friends', require('./routes/friend'));
-
+app.use('/api/comments', require('./routes/comment'));
 // Rutas assets
 
 app.use('/styles',express.static(__dirname +'/public/css/styles.css'));
@@ -59,6 +59,8 @@ app.get('/', (req, res) => {
 });
 
 
+
+
 app.post('/index',function(req,res){
   let email = req.body.email;
   let password = req.body.password;
@@ -69,13 +71,16 @@ app.post('/index',function(req,res){
       res.render('error');
     }else{
       getUsers(user.id).then(users => 
-        post.findAll({include:['user','comentarios']}).then(function(posts){
+        post.findAll({include:['autor','posteos'],order:[['id','DESC']]}).then(function(posts){
+          
           getFriends(user.id).then(friends => {
            
             if(users.length > 0){
               req.session.ID = user.id;
+
+              userId_session = req.session.ID;
               
-              res.render('index',{user:user,title:'Bienvenido a mi nuevo mundo',posts: posts, users: users,friends: friends});
+              res.render('index',{user:user,title:'Bienvenido a mi nuevo mundo',posts: posts, users: users,friends: friends, userId_session: userId_session});
             }else{
               res.json({mensaje:'No existen mas usuarios'});
             }
@@ -102,8 +107,8 @@ app.post('/index',function(req,res){
   }
 
   function getFriends(id){
-    return friend.findAll({include:'user',where:{
-      sender_id:id
+    return friend.findAll({include:'emisor',where:{
+      emisorId:id
     }}).then((friends) => {return friends});
   }
 
@@ -136,11 +141,16 @@ app.post('/signUp', multipartMiddleware ,function(req,res){
 
 // Ruta de prueba
 app.get('/prueba',function(req,res){
-  comment.findAll({include:['post']}).then(users =>{
+  post.findAll({include:['posteos','autor']}).then(users =>{
     res.json(users);
   }).catch((err)=>{
     res.json(err);
   })
+});
+
+app.get('/logout',function(req,res){
+req.session.destroy();
+res.redirect('/');
 });
 
 app.listen(port, () => {

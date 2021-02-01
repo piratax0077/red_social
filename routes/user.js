@@ -8,17 +8,25 @@ const { Op } = require("sequelize");
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart({uploadDir:'./public/images'});
 
-router.get('/',function(req,res){
+function checkAuth(req,res,next){
+    if (!req.session.ID) {
+        res.send("No esta autorizado para ver esta pagina");
+      } else {
+        next();
+      }
+}
+
+router.get('/',checkAuth,function(req,res){
     user.findAll({include:'city'}).then((user) => res.json(user) );
 });
 
 router.get('/:id',function(req,res){
     let userId = req.params.id;
-
-    user.findOne({where:{
+    
+    user.findOne({include:'city' ,where:{
         id: userId
-    }}).then((user) => post.findAll({where:{
-        userId: user.id
+    }}).then((user) => post.findAll({include:'autor' ,where:{
+        autorId: user.id
     }}).then(function(posts){
         getFriends(userId).then(function(friends){
             
@@ -67,7 +75,7 @@ router.post('/edit', multipartMiddleware, function(req,res){
                 id: userId
             }}).then(user =>{
                 getUsers(userId).then(users => {
-                    post.findAll({include:'user'}).then((posts) => {
+                    post.findAll({include:['autor','posteos'],order:[['id','DESC']]}).then((posts) => {
                         res.render('index',{user: user, title: 'Bienvenido a mi nuevo mundo', posts: posts, users: users})
                     }).catch(err => console.log(err))
                 });
@@ -97,12 +105,23 @@ function getUsers(id){
   }
 
   function getFriends(id){
-      console.log(id);
-    return Friend.findAll({include:'user',where:{
+      
+    return Friend.findAll({include:'emisor',where:{
         
-      sender_id:id
+      emisorId:id
     }}).then((friends) => { return friends});
   }
   
+  router.delete('/delete',function(req,res){
+    let postId = req.body.postId;
+
+    post.destroy({where:{
+        id: postId
+    }}).then(()=>{
+        post.findAll({include:['autor','posteos'],order:[['id','DESC']]}).then((posts) => {
+            res.send({posts: posts})
+        }).catch(err => console.log(err))
+    })
+  });
 
 module.exports = router;

@@ -10,9 +10,9 @@ router.get('/:id',function(req,res){
         sender_id: userId,
         userId: id_receptor
     }).then(function(){
-        res.json({mensaje:'Ahora son amigos'})
+        res.status(200).send({mensaje:'Ahora son amigos'})
     }).catch(function(err){
-        res.json({mensaje:'Ha ocurrido un error '+err})
+        res.status(200).send({mensaje:'Ha ocurrido un error '+err})
     })
 });
 

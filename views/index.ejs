@@ -16,6 +16,41 @@
 
 <body>
     <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+              </ul>
+              <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              </form>
+            </div>
+          </nav>
         <h3 style="width: 60%; float: left;">
             <%=title %>
         </h3>
@@ -25,7 +60,8 @@
         </h1>
         <img src='/images/<%=user.image %>' alt="" class="avatar">
         <a href="/api/users/edit/<%=user.id %>" class="btn btn-danger btn-xs">Editar usuario</a>
-        <button class="btn btn-primary btn-xs" id="logout">Cerrar sesión</button>
+        <a href="/api/users/<%=user.id %>" class="btn btn-warning btn-xs">Ver mi perfil</a>
+        <a href="/logout" class="btn btn-primary btn-xs" id="logout">Cerrar sesión</a>
 
         <div class="clearfix"></div>
         <div id="postear">
@@ -46,9 +82,6 @@
                     <input type="hidden" name="userId" id="userId" value="<%=user.id %>">
                     <input type="button" class="btn btn-success btn-xs" value="Postear" id="btnPost">
 
-
-
-
                 </div>
             </form>
         </div>
@@ -58,27 +91,39 @@
                     <% for(var i=0; i < posts.length; i++){ %>
                         <div class="noticia">
                             <div class="contenido">
+                                <img src="/images/<%=posts[i].autor.image %>" alt="" class="avatar_post">
+                                <div class="clearfix"></div>
                                 <h1 id="titulo">
                                     <%=posts[i].title %>
+                                    <input type="hidden" name="" id="userId_session" value="<%=userId_session %>" >
+                                    <% if(userId_session == posts[i].autor.id){ %>
+                                    <button class="btn btn-danger btnDeletePost" value="<%=posts[i].id %>"><i class="fas fa-times-circle"></i></button>
+                                    <% } %>
                                 </h1>
                                 <h2 id="subtitulo">
                                     <%=posts[i].body %>
                                 </h2>
                                 <p>
-                                    <a href='/api/users/<%=posts[i].userId%>'>
-                                        <%=posts[i].user.name %>
+                                    <a href='/api/users/<%=posts[i].autorId%>'>
+                                        <%=posts[i].autor.name %>
                                     </a>
                                 </p>
-                                <img src="/images/<%=posts[i].user.image %>" alt="" class="avatar">
+                                
                                 <img src="" alt="" srcset="" class="imgPrincipal">
                                 <div id="likes">
                                     <i class="fas fa-heart black"></i>
                                     <i class="fas fa-share black"></i>
                                 </div>
+                                <div class="addComent">
                                 <div id="comments">
-                                    <% for(var h=0; h < posts[i].comentarios.length; h++) { %>
-                                        <p><%=posts[i].comentarios[h].autorId %> - <%=posts[i].comentarios[h].description %></p>
+                                    <% for(var h=0; h < posts[i].posteos.length; h++) { %>
+                                        <p><%=posts[i].posteos[h].autorId %> - <%=posts[i].posteos[h].description %></p>
                                     <% } %>
+                                </div>
+                                
+                                    <p>Comenta:</p>
+                                    <input type="text" name="" id="comment" class="form-control">
+                                    <button class="btn btn-success btnAddComment" value="<%=posts[i].id %>"><i class="fas fa-check"></i></i></button>
                                 </div>
                             </div>
                         </div>
@@ -93,7 +138,7 @@
                         <p><a href="/api/users/<%=users[i].id %>"><%=users[i].name %></a></p>
                         <span style="font-size: 12px; color: #eee;"><%=users[i].city.name %></span>
                         <img src="/images/<%=users[i].image %>" alt="" class="avatar">
-                        <a href="/api/friends/<%=users[i].id%>" class="btn btn-success btn-xs">Agregar</a>
+                        <a href="/api/friends/<%=users[i].id%>" class="btn btn-success btn-xs btnAddFriend" >Agregar</a>
                         <% } %>
                     <% }  %>
                 </aside>

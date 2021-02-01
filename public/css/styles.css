@@ -21,6 +21,7 @@ body{
     border:1px solid red;
     margin-bottom: 10px;
     margin-top: 10px;
+    overflow: hidden;
 }
 
 #post{
@@ -62,4 +63,21 @@ body{
     height: 100px;
     border-radius: 900px;
     display: block;
+}
+
+.avatar_post{
+    width: 60px;
+    height: 60px;
+    border-radius: 900px;
+    float: left;
+}
+
+#titulo i{
+    float: right;
+}
+
+#sidebar,
+#sidebar .avatar{
+    text-align: center;
+    margin: 0px auto;
 }
