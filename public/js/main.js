@@ -1,4 +1,17 @@
 $(document).ready(function(){
+
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 300) {
+            $('a.scroll-top').fadeIn('slow');
+        } else {
+            $('a.scroll-top').fadeOut('slow');
+        }
+    });
+    $('a.scroll-top').click(function(event) {
+        event.preventDefault();
+        $('html, body').animate({scrollTop: 0}, 600);
+    });
+
     $('.fa-heart').on('click',function(){
         if($(this).hasClass('black')){
             $(this).removeClass('black');
@@ -53,7 +66,9 @@ $(document).ready(function(){
 
     $('.btnDeletePost').on('click',function(e){
         e.preventDefault();
-        let postId = $(this).val();
+        let opt = confirm('¿Esta seguro de querer eliminar este post?');
+        if(opt == true){
+            let postId = $(this).val();
         let userId_session = $('#userId_session').val();
         
         $.ajax({
@@ -103,6 +118,11 @@ $(document).ready(function(){
                 });
             }
         })
+        }else{
+           
+            return false;
+        }
+        
     });
 
     $('.addComent').on('click',function(){

@@ -96,23 +96,25 @@ app.post('/index',function(req,res){
       console.log(err);
   });
 
-  function getUsers(id){
-    return user.findAll({
-      include:'city',
-      where:{id:{
-      [Op.ne] : id
-    }}}).then(users => {
-      return users;
-    }).catch(err => console.log(err))
-  }
-
-  function getFriends(id){
-    return friend.findAll({include:'emisor',where:{
-      emisorId:id
-    }}).then((friends) => {return friends});
-  }
+ 
 
 });
+
+function getUsers(id){
+  return user.findAll({
+    include:'city',
+    where:{id:{
+    [Op.ne] : id
+  }}}).then(users => {
+    return users;
+  }).catch(err => console.log(err))
+}
+
+function getFriends(id){
+  return friend.findAll({include:'emisor',where:{
+    emisorId:id
+  }}).then((friends) => {return friends});
+}
 
 app.get('/signUp',function(req,res){
   city.findAll().then(citys => res.render('signup',{citys: citys, title:'Registrar nuevo usuario', user:''}) )
@@ -151,6 +153,38 @@ app.get('/prueba',function(req,res){
 app.get('/logout',function(req,res){
 req.session.destroy();
 res.redirect('/');
+});
+
+app.get('/redirect/:id',function(req,res){
+  let id = req.params.id;
+  user.findOne({attributes:['name','email','id','image'], where:{id: id}}).then(user=>{
+    if(!user || user == ''){
+      res.render('error');
+    }else{
+      getUsers(user.id).then(users => 
+        post.findAll({include:['autor','posteos'],order:[['id','DESC']]}).then(function(posts){
+          
+          getFriends(user.id).then(friends => {
+           
+            if(users.length > 0){
+              req.session.ID = user.id;
+
+              userId_session = req.session.ID;
+              
+              res.render('index',{user:user,title:'Bienvenido a mi nuevo mundo',posts: posts, users: users,friends: friends, userId_session: userId_session});
+            }else{
+              res.json({mensaje:'No existen mas usuarios'});
+            }
+          });
+        
+         
+      }));
+      
+      
+    }
+  }).catch(err=>{
+    res.json(err);
+  })
 });
 
 app.listen(port, () => {

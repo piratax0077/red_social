@@ -3,7 +3,6 @@ const user = require('./user');
 const city = require('./city');
 const friend = require('./friend');
 const comment = require('./comment');
-const Post = require('./post');
 
 
 user.hasMany(post,{as:"publicaciones",foreignKey:"autorId"});

@@ -81,3 +81,22 @@ body{
     text-align: center;
     margin: 0px auto;
 }
+a.scroll-top {
+	color: #fff;
+	display: none;
+	width: 30px;
+	height: 30px;
+	position: fixed;
+	z-index: 1000;
+	bottom: 50px;
+	right: 30px;
+	font-size: 20px;
+	background: #222;
+	border-radius: 3px !important;
+	text-align: center;
+	border: 1px solid hsla(0, 0%, 78%, 0.3)
+}
+a.scroll-top i {
+	position: relative;
+	top: 2px;
+}
